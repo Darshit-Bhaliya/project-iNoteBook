@@ -5,7 +5,7 @@ const About = () => {
   const a = useContext(noteContext)
   return (
     <div>
-      This is about {a.name}
+      This is about page!
     </div>
   )
 }

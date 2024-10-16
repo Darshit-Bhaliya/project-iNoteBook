@@ -11,7 +11,7 @@ function App() {
       <NoteState>
         <Router>
           <Navbar />
-          <div className="container">
+          <div className="container" style={{"backgroundColor": "#f7f7f7"}}>
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route exact path="/about" element={<About />} />
