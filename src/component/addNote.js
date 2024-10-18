@@ -1,42 +1,65 @@
-import React, {useContext,useState} from 'react'
-import noteContext from '../Context/notes/noteContext';
+import React, { useContext, useState } from "react";
+import noteContext from "../Context/notes/noteContext";
 
 const AddNote = () => {
-    const context = useContext(noteContext);
-    const {addNote} = context;
-    const [note, setNote] = useState({title:"",description:"",tag:"default"})
+  const context = useContext(noteContext);
+  const { addNote } = context;
+  const [note, setNote] = useState({ title: "", description: "", tag: "default" });
 
-    const handleClick = (e) => {
-        e.preventDefault();
-        addNote(note.title,note.description,note.tag);
-    }
+  const handleClick = (e) => {
+    e.preventDefault();
+    addNote(note.title, note.description, note.tag);
+    setNote({ title: "", description: "", tag: "default" })
+  };
+  const handleReset=(e)=>{
+    setNote({ title: "", description: "", tag: "default" })
+  }
 
-    const onChange = (e) => {
-        setNote({...note,[e.target.name]: e.target.value})
-    }
+  const onChange = (e) => {
+    setNote({ ...note, [e.target.name]: e.target.value });
+  };
 
+  const handleFocus=()=>{
+    document.getElementById('tag').select();
+  }
   return (
-    <div className="container my-3">
-    <h2 className='text-center text-secondary'>Add notes</h2>
-    <form className=''>
-      <div className="mb-3">
-        <label htmlFor="title" className="form-label">
-          Add Title :
-        </label>
-        <input type="text" className="form-control " id="title" name="title" placeholder="Enter title" aria-describedby="emailHelp" onChange={onChange}/>
-      </div>
-      <div className="mb-3">
-        <label htmlFor="description" className="form-label">
-          Add Description :
-        </label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Enter description"></textarea>      </div>
-      <button type="submit" className="btn btn-primary my-2" onClick={handleClick}>
-        Add note
-      </button>
-    </form>
-    <hr className="hr hr-blurry"/>
-  </div>
-  )
-}
+    
+    <div className="container my-3"style={{"backgroundColor": "#f7f7f7"}}y>
+      <h2 className="text-secondary  py-3">Add Note:</h2>
+      <div className="d-flex justify-content-center">
+        <form className="w-50">
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">
+              Title
+            </span>
+            <input type="text" value={note.title} className="form-control" placeholder="add title" id="title" name="title" aria-label="Username" aria-describedby="basic-addon1" onChange={onChange} minLength={3} required />
+          </div>
 
-export default AddNote
+          <div className="input-group mb-3">
+            <span className="input-group-text">Description</span>
+            <textarea type="text" value={note.description} className="form-control" id="description" name="description" placeholder="add description" rows="3" onChange={onChange} minLength={5} required/>
+          </div>
+
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">
+              Tag
+            </span>
+            <input type="text" value={note.tag} className="form-control" placeholder="add tag" id="tag" name="tag" aria-label="Username" aria-describedby="basic-addon1" onChange={onChange} onFocus={handleFocus} />
+          </div>
+
+          <div className="text-center">
+            <button disabled={note.title.length===0 && note.description.length===0} type="reset" className="btn btn-outline-danger mx-2 my-2 btn-sm" onClick={handleReset}>
+              Reset
+            </button>
+            <button  disabled={note.title.length<3 || note.description.length<5} type="submit" className="btn btn-outline-success my-2 btn-sm" onClick={handleClick}>
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+      <hr className="hr hr-blurry" />
+    </div>
+  );
+};
+
+export default AddNote;

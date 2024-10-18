@@ -31,8 +31,8 @@ const NoteState = (props)=>{
         },
         body: JSON.stringify({title,description,tag})
       });
+      
       const json= response.json();
-      console.log("Adding a new note")
       const note= {
         "_id": "67078143150d880f6d9ce0fd",
         "user": "670780f9150d880f6d9ce0f7",
@@ -49,28 +49,42 @@ const NoteState = (props)=>{
     const editNote = async(id,title, description, tag) =>{
       // api call
       const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjcwM2I2ZmYzYzA3YjdjZWM3M2E4OWY0In0sImlhdCI6MTcyODMwMTM2OX0.SFatnGpQ6RMnkUloBc4yof9SF88nXoLmMncsKh9YN3s"
+          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjcwNzgwZjkxNTBkODgwZjZkOWNlMGY3In0sImlhdCI6MTcyOTA1MzcyM30.WyWrEG-ufYPM4m5NuDupUrRPJudjG8neY51xR8_HhvU"
         },
         body: JSON.stringify({title,description,tag})
       });
       const json= response.json();
 
-      // logic for edit note
+      let newNotes = JSON.parse(JSON.stringify(notes))
+      // logic for edit in client
       for (let index = 0; index < notes.length; index++) {
         const element = notes[index];
         if(element._id === id){
-          element.title=title;
-          element.description=description;
-          element.tag=tag;
+          newNotes[index].title=title;
+          newNotes[index].description=description;
+          newNotes[index].tag=tag;
+          break;
         }
       }
+      setNotes(newNotes);
     }
     
     // Delete note
-    const deleteNote = (id) =>{
+    const deleteNote = async(id) =>{
+      // API call
+      const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjcwNzgwZjkxNTBkODgwZjZkOWNlMGY3In0sImlhdCI6MTcyOTA1MzcyM30.WyWrEG-ufYPM4m5NuDupUrRPJudjG8neY51xR8_HhvU"
+        }
+      });
+      const json = response.json();
+      console.log(json)
+      
       console.log("deleting "+id);
       const newNotes= notes.filter((note)=>{return note._id!==id})
       setNotes(newNotes);

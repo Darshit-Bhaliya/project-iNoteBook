@@ -3,7 +3,7 @@ import Notes from "./Notes";
 
 const Home = () => {
   return (
-    <div>
+    <div style={{"backgroundColor": "#f7f7f7"}}>
       <Notes />
     </div>
   );
